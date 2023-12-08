@@ -2,30 +2,31 @@ import { ADD_FAV, FILTER, ORDER, REMOVE_FAV } from "./action-types";
 
 const initialState = {
   myFavorites: [],
-  allCharacters: []
+  allCharacters: [],
+  errors: {}
 }
 
-export default function reducer(state = initialState, { type, payload }) {
+//* allCharacters = [ { Rick, M}, {Morty, M}, {Beth, F}, {Summer, F} ]
 
+//* myFavorites = [ {Beth, F}, {Summer, F} ]
+//* => <Favorites /> => <Card />
+
+
+export default function reducer(state = initialState, { type, payload }) {
+  //* action = { type:.., payload:...}
+  // const { type, payload } = action;
   switch(type) {
     case ADD_FAV: {
-      return {
-        ...state,
-        allCharacters: [...state.allCharacters, payload],
-        myFavorites: [...state.allCharacters, payload]
-      }
+      return { ...state, myFavorites: payload, allCharacters: payload };
     }
     case REMOVE_FAV: {
-      const filteredFavs = state.allCharacters.filter(
-        favorite => favorite.id !== Number(payload)
-      );
-      return {
-        ...state,
-        allCharacters: filteredFavs,
-        myFavorites: filteredFavs
-      }
+      // const filteredFavs = state.allCharacters.filter(
+      //   favorite => favorite.id !== Number(payload)
+      // );
+      return { ...state, myFavorites: payload, allCharacters: payload };
     }
     case FILTER:{
+      //* { type: FILTER, payload: "FEMALE" }
       if(payload === "All") return {
         ...state,
         myFavorites: state.allCharacters
@@ -48,6 +49,10 @@ export default function reducer(state = initialState, { type, payload }) {
         ...state,
         myFavorites: orderCopy
       }
+      //* case "ERROR":
+        //* Código
+        //* Cargar error en estado "errors"
+
     default:
       return { ...state }
   }
